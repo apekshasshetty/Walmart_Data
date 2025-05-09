@@ -1,0 +1,12 @@
+functions-framework==3.*
+pandas
+numpy
+scikit-learn
+google-cloud-bigquery
+google-cloud-storage
+spacy==3.8.5
+scipy
+requests
+bigframes
+pytest
+#blis==0.7.9

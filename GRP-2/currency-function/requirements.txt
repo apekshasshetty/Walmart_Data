@@ -1,0 +1,5 @@
+google-cloud-pubsub
+google-cloud-bigtable
+requests
+functions-framework
+google-cloud-core
