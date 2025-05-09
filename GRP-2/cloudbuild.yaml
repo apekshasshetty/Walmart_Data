@@ -117,10 +117,10 @@ steps:
       - |
         echo "Workspace contents:"
         ls -la
-        
+
         echo "Frontend contents:"
         ls -la frontend/
-        
+
         echo "Running tests..."
         cd frontend
         PYTHONPATH=/workspace pytest test_main.py -v
