@@ -87,6 +87,7 @@ steps:
         bq query --use_legacy_sql=false --project_id=final-project-458404 < tests/test_transformed_data.sql
         bq query --use_legacy_sql=false --project_id=final-project-458404 < tests/test_data_completeness.sql
         bq query --use_legacy_sql=false --project_id=final-project-458404 < tests/test_referential_integrity.sql
+        
   - name: 'python:3.10'
     id: 'install'
     entrypoint: 'pip'
@@ -94,8 +95,6 @@ steps:
     env:
       - 'PYTHONPATH=/tmp/packages'
  
-  # Step 2: Run tests with verbose output
- steps:
   # --- Setup Python environment ---
   - name: 'python:3.11'
     id: 'setup'
