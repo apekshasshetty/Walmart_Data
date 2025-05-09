@@ -90,42 +90,37 @@ steps:
 
 
   - name: 'python:3.10'
-    id: 'install'
-    entrypoint: 'pip'
-    args: ['install', 'pandas', 'scikit-learn', 'pytest', 'bigframes']
-    env:
-      - 'PYTHONPATH=/tmp/packages'
- 
-  # --- Setup Python environment ---
-  - name: 'python:3.9'
-    id: 'setup'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "Installing dependencies..."
-        pip install --upgrade pip
-        pip install pytest pandas spacy==3.8.5
-        python -m spacy download en_core_web_sm
-
-  # --- Run frontend tests ---
-  - name: 'python:3.9'
     id: 'test'
-    entrypoint: 'bash'
+    entrypoint: bash
     args:
-      - '-c'
-      - |
-        echo "Workspace contents:"
-        ls -la
-
-        echo "Frontend contents:"
-        ls -la frontend/
-
-        echo "Running tests..."
-        cd GRP-2/frontend
-        PYTHONPATH=/workspace pytest test_main.py -v
-    waitFor: ['setup']
-
+    - -c
+    - |
+      apt-get update && apt-get install -y build-essential
+      python3 -m ensurepip --upgrade
+      pip install --upgrade setuptools wheel pip
+      python3 -m pip install --prefer-binary -r frontend/requirements.txt
+      pip list
+      PYTHONPATH=frontend python3 -m unittest discover -s frontend -p 'test_*.py'
+ 
+  # Step 3: Deploy to Cloud Functions with beauty-specific configuration
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy'
+    entrypoint: 'gcloud'
+    args:
+      - 'functions'
+      - 'deploy'
+      - 'get-product-recommendation'
+      - '--runtime=python39'
+      - '--trigger-http'
+      - '--entry-point=main'
+      - '--source=frontend'
+      - '--region=us-central1'
+      - '--memory=2Gib'
+      - '--allow-unauthenticated'
+    waitFor: ['test']
+ 
 options:
   logging: CLOUD_LOGGING_ONLY
-timeout: 600s
+  env:
+    - 'GOOGLE_CLOUD_PROJECT=carbon-beanbag-452610-q6'      
+timeout: 900s
