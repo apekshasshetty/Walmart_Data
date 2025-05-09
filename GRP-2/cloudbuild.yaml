@@ -98,7 +98,7 @@ steps:
       apt-get update && apt-get install -y build-essential
       python3 -m ensurepip --upgrade
       pip install --upgrade setuptools wheel pip
-      python3 -m pip install --prefer-binary -r frontend/requirements.txt
+      python3 -m pip install --prefer-binary -r /GRP-2/frontend/requirements.txt
       pip list
       PYTHONPATH=frontend python3 -m unittest discover -s frontend -p 'test_*.py'
  
