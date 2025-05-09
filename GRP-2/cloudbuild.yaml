@@ -115,16 +115,17 @@ steps:
     args:
       - '-c'
       - |
-        echo "Current directory structure:"
+        echo "Workspace contents:"
         ls -la
+        
+        echo "Frontend contents:"
+        ls -la frontend/
         
         echo "Running tests..."
         cd frontend
-        PYTHONPATH=. pytest test_main.py -v
+        PYTHONPATH=/workspace pytest test_main.py -v
     waitFor: ['setup']
 
 options:
   logging: CLOUD_LOGGING_ONLY
-  env:
-    - 'PYTHONPATH=/workspace/frontend'
 timeout: 600s
