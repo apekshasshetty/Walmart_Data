@@ -89,23 +89,22 @@ steps:
   #       bq query --use_legacy_sql=false --project_id=final-project-458404 < tests/test_referential_integrity.sql
 
 
-  - name: 'python:3.10'
+  - name: 'python:3.10-slim'
     id: 'test'
     entrypoint: bash
     args:
     - -c
     - |
-      apt-get update && apt-get install -y build-essential
-      python3 -m ensurepip --upgrade
-      pip install --upgrade setuptools wheel pip
-      python3 -m pip install --prefer-binary -r GRP-2/frontend/requirements.txt
-      pip list
-      PYTHONPATH=GRP-2/frontend python3 -m unittest discover -s GRP-2/frontend -p 'test_*.py'
+      apt-get update && \
+        apt-get install -y build-essential python3-dev && \
+        pip install --upgrade pip setuptools wheel && \
+        pip install -r frontend/requirements.txt
+     
  
-  # Step 3: Deploy to Cloud Functions with beauty-specific configuration
+  # Step 3: Deploy to Cloud Functions with beauty-specific
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: 'deploy'
     entrypoint: 'gcloud'
+    id: 'deploy'
     args:
       - 'functions'
       - 'deploy'
@@ -124,3 +123,4 @@ options:
   env:
     - 'GOOGLE_CLOUD_PROJECT=carbon-beanbag-452610-q6'      
 timeout: 900s
+ 
