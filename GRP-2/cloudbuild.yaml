@@ -128,4 +128,3 @@ options:
   env:
     - 'PYTHONPATH=/workspace/frontend'
 timeout: 600s
-
