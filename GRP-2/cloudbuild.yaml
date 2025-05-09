@@ -88,7 +88,7 @@ steps:
   #       bq query --use_legacy_sql=false --project_id=final-project-458404 < tests/test_data_completeness.sql
   #       bq query --use_legacy_sql=false --project_id=final-project-458404 < tests/test_referential_integrity.sql
 
-  
+
   - name: 'python:3.10'
     id: 'install'
     entrypoint: 'pip'
@@ -97,7 +97,7 @@ steps:
       - 'PYTHONPATH=/tmp/packages'
  
   # --- Setup Python environment ---
-  - name: 'python:3.11'
+  - name: 'python:3.9'
     id: 'setup'
     entrypoint: 'bash'
     args:
@@ -109,7 +109,7 @@ steps:
         python -m spacy download en_core_web_sm
 
   # --- Run frontend tests ---
-  - name: 'python:3.11'
+  - name: 'python:3.9'
     id: 'test'
     entrypoint: 'bash'
     args:
@@ -122,7 +122,7 @@ steps:
         ls -la frontend/
 
         echo "Running tests..."
-        cd frontend
+        cd GRP-2/frontend
         PYTHONPATH=/workspace pytest test_main.py -v
     waitFor: ['setup']
 
