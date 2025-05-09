@@ -3,7 +3,7 @@ from main import clean_and_extract_tags, content_based_recommendations
 import pandas as pd
 
 def test_clean_and_extract_tags():
-    text = "This is a sample product!"
+    text = "This is a sample product description!"
     result = clean_and_extract_tags(text)
     assert isinstance(result, str)
     assert "sample" in result
